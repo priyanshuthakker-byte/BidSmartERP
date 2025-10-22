@@ -2,10 +2,10 @@
 const nextConfig = {
   experimental: {
     turbo: {
-      enabled: false,
-    },
+      enabled: false
+    }
   },
-  reactStrictMode: true,
+  reactStrictMode: true
 }
 
 module.exports = nextConfig
