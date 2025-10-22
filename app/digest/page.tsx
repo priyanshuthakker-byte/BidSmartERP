@@ -1,54 +1,54 @@
-import { getUserRole, hasAccess } from '@/lib/auth'
-
-const role = getUserRole()
-if (!hasAccess(role, 'digest')) {
-  return <div style={{ padding: 40, fontSize: 18 }}>Access Denied</div>
-}
 'use client'
 import { useState } from 'react'
-
-type Company = 'Nascent Info Technologies' | 'Arctic Experts Pvt. Ltd.'
-type TenderDigest = {
-  number: string
-  description: string
-  submissionDate: string
-  evaluation: string
-  clauseNotes: string
-  status: 'Draft' | 'Submitted' | 'Won' | 'Lost'
-}
-
-const data: Record<Company, TenderDigest[]> = {
-  'Nascent Info Technologies': [
-    {
-      number: 'GEM/2025/B/123456',
-      description: 'Smart City Dashboard',
-      submissionDate: '30-Oct-2025',
-      evaluation: 'QCBS',
-      clauseNotes: 'Consortium allowed, 3 similar projects, GIS scope',
-      status: 'Submitted',
-    },
-    {
-      number: 'GEM/2025/B/789012',
-      description: 'Tender Monitoring Portal',
-      submissionDate: '02-Nov-2025',
-      evaluation: 'Least Cost',
-      clauseNotes: 'No consortium, BOQ required, portal + dashboard experience',
-      status: 'Draft',
-    },
-  ],
-  'Arctic Experts Pvt. Ltd.': [
-    {
-      number: 'GEM/2025/B/654321',
-      description: 'Municipal ERP System',
-      submissionDate: '31-Oct-2025',
-      evaluation: 'Least Cost',
-      clauseNotes: 'ERP experience, mobile audit logs, no consortium',
-      status: 'Won',
-    },
-  ],
-}
+import { getUserRole, hasAccess } from '@/lib/auth'
 
 export default function DigestPage() {
+  const role = getUserRole()
+  if (!hasAccess(role, 'digest')) {
+    return <div style={{ padding: 40, fontSize: 18 }}>Access Denied</div>
+  }
+
+  type Company = 'Nascent Info Technologies' | 'Arctic Experts Pvt. Ltd.'
+  type TenderDigest = {
+    number: string
+    description: string
+    submissionDate: string
+    evaluation: string
+    clauseNotes: string
+    status: 'Draft' | 'Submitted' | 'Won' | 'Lost'
+  }
+
+  const data: Record<Company, TenderDigest[]> = {
+    'Nascent Info Technologies': [
+      {
+        number: 'GEM/2025/B/123456',
+        description: 'Smart City Dashboard',
+        submissionDate: '30-Oct-2025',
+        evaluation: 'QCBS',
+        clauseNotes: 'Consortium allowed, 3 similar projects, GIS scope',
+        status: 'Submitted',
+      },
+      {
+        number: 'GEM/2025/B/789012',
+        description: 'Tender Monitoring Portal',
+        submissionDate: '02-Nov-2025',
+        evaluation: 'Least Cost',
+        clauseNotes: 'No consortium, BOQ required, portal + dashboard experience',
+        status: 'Draft',
+      },
+    ],
+    'Arctic Experts Pvt. Ltd.': [
+      {
+        number: 'GEM/2025/B/654321',
+        description: 'Municipal ERP System',
+        submissionDate: '31-Oct-2025',
+        evaluation: 'Least Cost',
+        clauseNotes: 'ERP experience, mobile audit logs, no consortium',
+        status: 'Won',
+      },
+    ],
+  }
+
   const [company, setCompany] = useState<Company>('Nascent Info Technologies')
 
   const generatePDF = async () => {
