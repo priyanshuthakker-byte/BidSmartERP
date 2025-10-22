@@ -1,7 +1,21 @@
 'use client'
 import { useState } from 'react'
 
-const tenders = [
+type Tender = {
+  number: string
+  description: string
+  emd: string
+  preBid: string
+  lastQueryDate: string
+  submissionDate: string
+  consortium: string
+  evaluation: string
+  preQual: string
+  techQual: string
+  scope: string
+}
+
+const tenders: Tender[] = [
   {
     number: 'GEM/2025/B/123456',
     description: 'Development of Smart City Dashboard',
@@ -32,13 +46,30 @@ const tenders = [
 
 export default function BossModule() {
   const [selected, setSelected] = useState<number | null>(null)
+  const [editable, setEditable] = useState<Tender | null>(null)
+
+  const handleSelect = (index: number) => {
+    setSelected(index)
+    setEditable({ ...tenders[index] })
+  }
+
+  const handleChange = (field: keyof Tender, value: string) => {
+    if (editable) {
+      setEditable({ ...editable, [field]: value })
+    }
+  }
+
+  const highlightClause = (text: string) => {
+    const keywords = ['consortium', 'QCBS', 'experience', 'scope', 'turnover']
+    return keywords.some(k => text.toLowerCase().includes(k)) ? '🔍 ' + text : text
+  }
 
   return (
-    <div style={{ padding: 40 }}>
+    <div style={{ padding: 20, maxWidth: 800, margin: 'auto' }}>
       <h2>Boss Module: Tender Summary</h2>
       <select
-        onChange={e => setSelected(parseInt(e.target.value))}
-        style={{ padding: 10, marginBottom: 20 }}
+        onChange={e => handleSelect(parseInt(e.target.value))}
+        style={{ padding: 10, marginBottom: 20, width: '100%' }}
       >
         <option value="">Select a Tender</option>
         {tenders.map((t, i) => (
@@ -48,22 +79,41 @@ export default function BossModule() {
         ))}
       </select>
 
-      {selected !== null && (
-        <table border={1} cellPadding={10} style={{ width: '100%', marginTop: 20 }}>
-          <tbody>
-            <tr><td><b>Tender Number</b></td><td>{tenders[selected].number}</td></tr>
-            <tr><td><b>Work Description</b></td><td>{tenders[selected].description}</td></tr>
-            <tr><td><b>EMD</b></td><td>{tenders[selected].emd}</td></tr>
-            <tr><td><b>Pre-Bid Meeting</b></td><td>{tenders[selected].preBid}</td></tr>
-            <tr><td><b>Last Date for Pre-Bid Queries</b></td><td>{tenders[selected].lastQueryDate}</td></tr>
-            <tr><td><b>Due Date of Submission</b></td><td>{tenders[selected].submissionDate}</td></tr>
-            <tr><td><b>Consortium Allowed</b></td><td>{tenders[selected].consortium}</td></tr>
-            <tr><td><b>Method of Evaluation</b></td><td>{tenders[selected].evaluation}</td></tr>
-            <tr><td><b>Pre-Qualification Criteria</b></td><td>{tenders[selected].preQual}</td></tr>
-            <tr><td><b>Technical Qualification</b></td><td>{tenders[selected].techQual}</td></tr>
-            <tr><td><b>Broad Scope of Work</b></td><td>{tenders[selected].scope}</td></tr>
-          </tbody>
-        </table>
+      {editable && (
+        <div style={{ overflowX: 'auto' }}>
+          <table border={1} cellPadding={10} style={{ width: '100%', fontSize: 14 }}>
+            <tbody>
+              {Object.entries(editable).map(([key, value]) => (
+                <tr key={key}>
+                  <td><b>{key}</b></td>
+                  <td>
+                    <input
+                      value={value}
+                      onChange={e => handleChange(key as keyof Tender, e.target.value)}
+                      style={{ width: '100%', padding: 6 }}
+                    />
+                    <div style={{ fontSize: 12, color: '#555' }}>
+                      {highlightClause(value)}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <button
+            style={{
+              marginTop: 20,
+              padding: '10px 20px',
+              backgroundColor: '#0070f3',
+              color: 'white',
+              border: 'none',
+              width: '100%',
+            }}
+            onClick={() => alert('Daily Digest PDF will be generated here')}
+          >
+            Generate Daily Digest PDF
+          </button>
+        </div>
       )}
     </div>
   )
