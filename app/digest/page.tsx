@@ -45,9 +45,25 @@ const data: Record<Company, TenderDigest[]> = {
 export default function DigestPage() {
   const [company, setCompany] = useState<Company>('Nascent Info Technologies')
 
-  const generatePDF = () => {
-    alert(`PDF Digest for ${company} will be generated here.`)
-    // Future: trigger backend API to generate and download PDF
+  const generatePDF = async () => {
+    const payload = {
+      company,
+      tenders: data[company],
+    }
+
+    const res = await fetch('/api/generate-pdf', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    })
+
+    const blob = await res.blob()
+    const url = window.URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `${company}-digest.pdf`
+    a.click()
+    window.URL.revokeObjectURL(url)
   }
 
   const cardStyle = {
