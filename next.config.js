@@ -1,6 +1,15 @@
-/** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true
+  experimental: {
+    appDir: true,
+  },
+  headers: async () => [
+    {
+      source: '/(.*)',
+      headers: [
+        { key: 'Service-Worker-Allowed', value: '/' },
+      ],
+    },
+  ],
 }
 
 module.exports = nextConfig
