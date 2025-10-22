@@ -1,4 +1,5 @@
-'use client';
+// Trigger redeploy for login setup
+// 'use client';
 import React, { useState } from 'react';
 
 export default function PortalManager() {
