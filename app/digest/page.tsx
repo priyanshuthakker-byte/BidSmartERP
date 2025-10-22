@@ -8,6 +8,7 @@ type TenderDigest = {
   submissionDate: string
   evaluation: string
   clauseNotes: string
+  status: 'Draft' | 'Submitted' | 'Won' | 'Lost'
 }
 
 const data: Record<Company, TenderDigest[]> = {
@@ -18,13 +19,15 @@ const data: Record<Company, TenderDigest[]> = {
       submissionDate: '30-Oct-2025',
       evaluation: 'QCBS',
       clauseNotes: 'Consortium allowed, 3 similar projects, GIS scope',
+      status: 'Submitted',
     },
     {
       number: 'GEM/2025/B/789012',
       description: 'Tender Monitoring Portal',
       submissionDate: '02-Nov-2025',
       evaluation: 'Least Cost',
-      clauseNotes: 'Experience in portal + dashboard, no consortium, BOQ required',
+      clauseNotes: 'No consortium, BOQ required, portal + dashboard experience',
+      status: 'Draft',
     },
   ],
   'Arctic Experts Pvt. Ltd.': [
@@ -33,7 +36,8 @@ const data: Record<Company, TenderDigest[]> = {
       description: 'Municipal ERP System',
       submissionDate: '31-Oct-2025',
       evaluation: 'Least Cost',
-      clauseNotes: 'No consortium, ERP experience required, mobile audit logs',
+      clauseNotes: 'ERP experience, mobile audit logs, no consortium',
+      status: 'Won',
     },
   ],
 }
@@ -93,6 +97,7 @@ export default function DigestPage() {
               <th style={thStyle}>Submission</th>
               <th style={thStyle}>Evaluation</th>
               <th style={thStyle}>Clause Notes</th>
+              <th style={thStyle}>Status</th>
             </tr>
           </thead>
           <tbody>
@@ -103,6 +108,7 @@ export default function DigestPage() {
                 <td style={tdStyle}>{t.submissionDate}</td>
                 <td style={tdStyle}>{t.evaluation}</td>
                 <td style={tdStyle}>{t.clauseNotes}</td>
+                <td style={tdStyle}><b>{t.status}</b></td>
               </tr>
             ))}
           </tbody>
@@ -138,6 +144,7 @@ export default function DigestPage() {
             <p><b>{t.number}</b> — {t.description}</p>
             <p><i>Submit by {t.submissionDate} | {t.evaluation}</i></p>
             <p style={{ color: '#555' }}>🔍 {t.clauseNotes}</p>
+            <p>Status: <b>{t.status}</b></p>
           </div>
         ))}
       </div>
