@@ -1,24 +1,29 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from 'next/server'
 
-export async function POST(request: Request) {
-  const body = await request.json();
-  const { portals, keywords, categories } = body;
+interface TenderData {
+  id: string
+  title: string
+  category: string
+  source: string
+  publishedDate: string
+  deadline: string
+  url: string
+}
 
-  const mockTender = (portal: string) => ({
-    portal,
-    tenderNumber: `TND/${portal}/2025/001`,
-    workDescription: `MIS portal with invoice and vendor module from ${portal}`,
-    emd: 'Rs. 165000',
-    preBid: '2025-10-25 11:00 AM (Online)',
-    queryDeadline: '2025-10-24',
-    submissionDeadline: '2025-10-30',
-    consortium: 'Not Allowed',
-    evaluation: 'Least Cost',
-    pq: '50L AAT, 1 proj > Rs. 300000, ISO',
-    tq: 'Same as PQ',
-    scope: 'Vendor info, invoice, MIS, outsourcing'
-  });
+export async function GET() {
+  try {
+    const response = await fetch('https://api.example.com/tenders')
+    const data: TenderData[] = await response.json()
 
-  const results = portals.map((p: any) => mockTender(p.name));
-  return NextResponse.json({ tenders: results });
+    return NextResponse.json({
+      success: true,
+      tenders: data,
+    })
+  } catch (error) {
+    console.error('Fetch error:', error)
+    return NextResponse.json({
+      success: false,
+      message: 'Failed to fetch tenders',
+    })
+  }
 }
