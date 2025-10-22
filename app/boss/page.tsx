@@ -45,11 +45,12 @@ const tenders: Tender[] = [
 ]
 
 export default function BossModule() {
-  const [selected, setSelected] = useState<number | null>(null)
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
   const [editable, setEditable] = useState<Tender | null>(null)
 
-  const handleSelect = (index: number) => {
-    setSelected(index)
+  const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const index = parseInt(e.target.value)
+    setSelectedIndex(index)
     setEditable({ ...tenders[index] })
   }
 
@@ -61,14 +62,14 @@ export default function BossModule() {
 
   const highlightClause = (text: string) => {
     const keywords = ['consortium', 'QCBS', 'experience', 'scope', 'turnover']
-    return keywords.some(k => text.toLowerCase().includes(k)) ? '🔍 ' + text : text
+    return keywords.some(k => text.toLowerCase().includes(k)) ? '🔍 ' + text : ''
   }
 
   return (
     <div style={{ padding: 20, maxWidth: 800, margin: 'auto' }}>
       <h2>Boss Module: Tender Summary</h2>
       <select
-        onChange={e => handleSelect(parseInt(e.target.value))}
+        onChange={handleSelect}
         style={{ padding: 10, marginBottom: 20, width: '100%' }}
       >
         <option value="">Select a Tender</option>
