@@ -54,56 +54,107 @@ export default function ToolsPage() {
       setResults(prev => [...prev, { tender, submitted, result, reason }])
   }
 
+  const cardStyle = {
+    background: '#fff',
+    borderRadius: 12,
+    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+    padding: 20,
+    marginBottom: 30,
+  }
+
+  const tableStyle = {
+    width: '100%',
+    borderCollapse: 'collapse' as const,
+    fontSize: 14,
+  }
+
+  const thStyle = {
+    background: '#f5f5f5',
+    textAlign: 'left' as const,
+    padding: 10,
+    borderBottom: '1px solid #ddd',
+  }
+
+  const tdStyle = {
+    padding: 10,
+    borderBottom: '1px solid #eee',
+  }
+
   return (
-    <div style={{ padding: 20, maxWidth: 900, margin: 'auto' }}>
-      <h2>📁 Document Vault</h2>
-      <input type="file" multiple onChange={handleFileUpload} />
-      <table border={1} cellPadding={8} style={{ marginTop: 10, width: '100%' }}>
-        <thead>
-          <tr><th>Name</th><th>Type</th><th>Tag</th></tr>
-        </thead>
-        <tbody>
-          {files.map((f, i) => (
-            <tr key={i}>
-              <td>{f.name}</td>
-              <td>{f.type}</td>
-              <td>
-                <input
-                  value={f.tag}
-                  onChange={e => handleTagChange(i, e.target.value)}
-                  style={{ width: '100%' }}
-                />
-              </td>
+    <div style={{ padding: 20, maxWidth: 1000, margin: 'auto', fontFamily: 'Segoe UI, sans-serif' }}>
+      <div style={cardStyle}>
+        <h2>📁 Document Vault</h2>
+        <input type="file" multiple onChange={handleFileUpload} style={{ marginBottom: 10 }} />
+        <table style={tableStyle}>
+          <thead>
+            <tr>
+              <th style={thStyle}>Name</th>
+              <th style={thStyle}>Type</th>
+              <th style={thStyle}>Tag</th>
             </tr>
+          </thead>
+          <tbody>
+            {files.map((f, i) => (
+              <tr key={i}>
+                <td style={tdStyle}>{f.name}</td>
+                <td style={tdStyle}>{f.type}</td>
+                <td style={tdStyle}>
+                  <input
+                    value={f.tag}
+                    onChange={e => handleTagChange(i, e.target.value)}
+                    style={{ width: '100%', padding: 6, borderRadius: 6, border: '1px solid #ccc' }}
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div style={cardStyle}>
+        <h2>⏰ Reminder System</h2>
+        <button
+          onClick={addReminder}
+          style={{ padding: '8px 16px', backgroundColor: '#0070f3', color: '#fff', border: 'none', borderRadius: 6 }}
+        >
+          Add Reminder
+        </button>
+        <ul style={{ marginTop: 10 }}>
+          {reminders.map((r, i) => (
+            <li key={i} style={{ padding: '6px 0' }}>{r.title} — <b>{r.date}</b></li>
           ))}
-        </tbody>
-      </table>
+        </ul>
+      </div>
 
-      <h2 style={{ marginTop: 40 }}>⏰ Reminder System</h2>
-      <button onClick={addReminder} style={{ marginBottom: 10 }}>Add Reminder</button>
-      <ul>
-        {reminders.map((r, i) => (
-          <li key={i}>{r.title} — {r.date}</li>
-        ))}
-      </ul>
-
-      <h2 style={{ marginTop: 40 }}>📊 Win/Loss Tracker</h2>
-      <button onClick={addResult} style={{ marginBottom: 10 }}>Add Result</button>
-      <table border={1} cellPadding={8} style={{ width: '100%' }}>
-        <thead>
-          <tr><th>Tender</th><th>Submitted</th><th>Result</th><th>Reason</th></tr>
-        </thead>
-        <tbody>
-          {results.map((r, i) => (
-            <tr key={i}>
-              <td>{r.tender}</td>
-              <td>{r.submitted}</td>
-              <td>{r.result}</td>
-              <td>{r.reason}</td>
+      <div style={cardStyle}>
+        <h2>📊 Win/Loss Tracker</h2>
+        <button
+          onClick={addResult}
+          style={{ padding: '8px 16px', backgroundColor: '#0070f3', color: '#fff', border: 'none', borderRadius: 6 }}
+        >
+          Add Result
+        </button>
+        <table style={{ ...tableStyle, marginTop: 10 }}>
+          <thead>
+            <tr>
+              <th style={thStyle}>Tender</th>
+              <th style={thStyle}>Submitted</th>
+              <th style={thStyle}>Result</th>
+              <th style={thStyle}>Reason</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {results.map((r, i) => (
+              <tr key={i}>
+                <td style={tdStyle}>{r.tender}</td>
+                <td style={tdStyle}>{r.submitted}</td>
+                <td style={tdStyle}>{r.result}</td>
+                <td style={tdStyle}>{r.reason}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   )
 }
