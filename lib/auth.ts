@@ -1,11 +1,13 @@
 export const getUserRole = () => {
-  return 'boss' // or 'executive'
+  // Replace with real auth logic later
+  return 'boss' // or 'executive' or 'viewer'
 }
 
 export const hasAccess = (role: string, page: string) => {
   const accessMap: Record<string, string[]> = {
     boss: ['boss', 'digest', 'tools'],
     executive: ['digest', 'tools'],
+    viewer: ['digest'],
   }
   return accessMap[role]?.includes(page)
 }

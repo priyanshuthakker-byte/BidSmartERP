@@ -1,3 +1,9 @@
+import { getUserRole, hasAccess } from '@/lib/auth'
+
+const role = getUserRole()
+if (!hasAccess(role, 'digest')) {
+  return <div style={{ padding: 40, fontSize: 18 }}>Access Denied</div>
+}
 'use client'
 import { useState } from 'react'
 
