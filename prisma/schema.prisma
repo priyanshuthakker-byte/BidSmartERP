@@ -1,0 +1,52 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./db.sqlite"
+}
+
+model Tender {
+  id              Int      @id @default(autoincrement())
+  tenderNumber    String
+  workDescription String
+  emd             String
+  preBid          String
+  queryDeadline   String
+  submissionDeadline String
+  consortium      String
+  evaluation      String
+  pq              String
+  tq              String
+  scope           String
+  createdAt       DateTime @default(now())
+}
+
+model PreBidQuestion {
+  id        Int    @id @default(autoincrement())
+  tenderId  Int
+  question  String
+  createdAt DateTime @default(now())
+}
+
+model Reminder {
+  id        Int    @id @default(autoincrement())
+  tenderId  Int
+  note      String
+  createdAt DateTime @default(now())
+}
+
+model WorkOrder {
+  id        Int    @id @default(autoincrement())
+  keyword   String
+  reference String
+  createdAt DateTime @default(now())
+}
+
+model StatusLog {
+  id        Int    @id @default(autoincrement())
+  tenderId  Int
+  status    String
+  updatedAt DateTime @updatedAt
+}
